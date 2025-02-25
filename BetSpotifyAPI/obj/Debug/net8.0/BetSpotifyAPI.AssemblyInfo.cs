@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BetSpotifyAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b081abc1a9448183b29ee7784d7a2857ea1f6e85")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+97a3bc59c69d5d57e1e25930782f23ca96fa4b90")]
 [assembly: System.Reflection.AssemblyProductAttribute("BetSpotifyAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BetSpotifyAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

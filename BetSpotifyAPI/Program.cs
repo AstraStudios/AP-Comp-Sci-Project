@@ -20,7 +20,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowReactApp"); // apply the cors policy we did above
+app.UseCors("AllowReactApp"); // apply the cors policy I did above
 
 app.MapControllers(); // make sure the controllers are mapped
 
