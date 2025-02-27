@@ -40,6 +40,8 @@ def fetchSpotifyCharts():
             chartList.append({"rank":rank,"song":songName,"streams":streams})
         # convert to a data frame
         df = pd.DataFrame(chartList, columns=["rank","song","streams"])
+        with open("streams.json",'w') as f:
+            json.dump(chartList,f)
         print(df)
     except KeyError:
         print("Faled to parse the charts data")
