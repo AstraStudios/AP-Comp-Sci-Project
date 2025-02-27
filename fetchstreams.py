@@ -1,8 +1,47 @@
-import spotipy # from https://spotipy.readthedocs.io/en/2.25.1/
-from spotipy.oauth2 import SpotifyClientCredentials
-import json
+import requests # request stuff from internet
+from bs4 import BeautifulSoup # find stuff on html pages https://beautiful-soup-4.readthedocs.io/en/latest/
+import pandas as pd # manipulate data https://pandas.pydata.org/
+import json # save stuff
 
-# check spotify api and give client ID
-spotifyClientID = "3267860352f446608621449584cf92b2"
-spotifyClientSecret = "363931554d1a4f0eaca6fd88d10891f1"
+print("Loading...")
 
+# fetch from kworb.net stream data https://kworb.net/spotify/country/us_daily.html
+spotifyStreamURL = "https://kworb.net/spotify/country/us_daily.html"
+
+def fetchSpotifyCharts():
+    response = requests.get(spotifyStreamURL)
+
+    if response.status_code != 200:
+        print("Failed to get charts")
+        return
+    
+    soup = BeautifulSoup(response.text, 'html.parser')
+    
+    scriptTag = soup.find("script",{"id":"daily"})
+    
+    if not scriptTag:
+        print("Failed to find data on charts")
+        return
+    
+    # attempt to convert it to a json file
+    data = scriptTag.string
+    chartsData = eval(data) # make the string a dictionary
+    
+    # extract the song data
+    try:
+        chartEntries = chartsData["props"]["pageProps"]["chartEntries"]
+        chartList = []
+
+        for entry in chartEntries:
+            rank = entry["chartEntryData"]["currentRank"]
+            songName = entry["trackMetadata"]["trackName"]
+            streams = entry["chartEntryData"].get("streams","N/A")
+
+            chartList.append({"rank":rank,"song":songName,"streams":streams})
+        # convert to a data frame
+        df = pd.DataFrame(chartList, columns=["rank","song","streams"])
+        print(df)
+    except KeyError:
+        print("Faled to parse the charts data")
+
+fetchSpotifyCharts()
