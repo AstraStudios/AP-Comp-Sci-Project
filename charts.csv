@@ -1,5 +1,5 @@
-# all data from https://kworb.net/spotify/country/global_daily.html
-Rank,Song,Artist,Streams
+# all data(except for lines) from https://kworb.net/spotify/country/global_daily.html
+Rank,Song,Artist,Streams,Lines
 1, Die With A Smile, Lady Gaga, 5.593.124
 2, Ordinary, Alex Warren, 5.298.898
 3, BIRDS OF A FEATHER, Billie Eilish, 4.895.155
