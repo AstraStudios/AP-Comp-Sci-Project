@@ -12,42 +12,25 @@ def fetchSpotifyCharts():
         "App-Platform":"Web",
         "Authorization":"", # currently works without auth
     }
-    response = requests.get(spotifyStreamURL)
+    response = requests.get(spotifyStreamURL, headers=headers)
 
     if response.status_code != 200:
         print("Failed to get charts")
         return
     
-    # use beautiful soup to read info from the page
-    soup = BeautifulSoup(response.text, 'html.parser')
-    
-    scriptTag = soup.find("script",{"id":"daily"})
-    
-    if not scriptTag:
-        print("Failed to find data on charts")
-        return
-    
-    # attempt to convert it to a json file
-    data = scriptTag.string
-    chartsData = eval(data) # make the string a dictionary
-    
-    # extract the song data
-    try:
-        chartEntries = chartsData["props"]["pageProps"]["chartEntries"]
-        chartList = []
+    data = response.json()
 
-        for entry in chartEntries:
-            rank = entry["chartEntryData"]["currentRank"]
-            songName = entry["trackMetadata"]["trackName"]
-            streams = entry["chartEntryData"].get("streams","N/A")
+    chartList = [] # make a empty list to store the chart
+    for entry in data["entries"]["items"]:
+        rank = entry["chartEntryData"]["currentRank"] # find the current rank of the song
+        songName = entry["trackMetadata"]["trackName"] # get the name
+        streams = entry["chartEntryData"].get("streams", "N/A")
 
-            chartList.append({"rank":rank,"song":songName,"streams":streams})
-        # convert to a data frame
-        df = pd.DataFrame(chartList, columns=["rank","song","streams"])
-        with open("streams.json",'w') as f:
-            json.dump(chartList,f)
-        print(df)
-    except KeyError:
-        print("Faled to parse the charts data")
+        chartList.append([rank,songName,streams]) # add all the data to the list
+    
+    # use a dataframe to show
+    df = pd.DataFrame(chartList, columns=["Rank", "Song", "Streams"])
+    print(df)
 
+# run
 fetchSpotifyCharts()
