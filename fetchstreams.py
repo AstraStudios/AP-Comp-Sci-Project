@@ -1,20 +1,24 @@
 import requests # request stuff from internet
-from bs4 import BeautifulSoup # find stuff on html pages https://beautiful-soup-4.readthedocs.io/en/latest/
 import pandas as pd # manipulate data https://pandas.pydata.org/
 import json # save stuff
 
-print("Loading...")
-
-# fetch from kworb.net stream data https://kworb.net/spotify/country/us_daily.html
-spotifyStreamURL = "https://kworb.net/spotify/country/us_daily.html"
-
 def fetchSpotifyCharts():
+    # fetch from the official spotify website https://charts-spotify-com-service.spotify.com/auth/v0/charts/regional-global-daily-latest
+    spotifyStreamURL = "https://charts-spotify-com-service.spotify.com/auth/v0/charts/regional-global-daily-latest"
+
+
+    headers = {
+        "Accept":"application/json",
+        "App-Platform":"Web",
+        "Authorization":"", # currently works without auth
+    }
     response = requests.get(spotifyStreamURL)
 
     if response.status_code != 200:
         print("Failed to get charts")
         return
     
+    # use beautiful soup to read info from the page
     soup = BeautifulSoup(response.text, 'html.parser')
     
     scriptTag = soup.find("script",{"id":"daily"})
