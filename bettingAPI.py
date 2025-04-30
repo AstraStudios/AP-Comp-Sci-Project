@@ -7,6 +7,10 @@ def cleanStreams(streamStr):
     # convert the stream number to python readable integer
     return int(streamStr.replace('.','')) # just remove the period
 
+def formatNumber(num): # user QOL thing to make it more readable
+    number = int(num)
+    return "{:,}".format(number) # using format -> https://www.w3schools.com/python/ref_string_format.asp
+
 def generateLines(streams): # generate the lines to bet on based off of the static current data.
     #May add trends in the future to make generation better.
     lines = [] # make a empty list to store the generated lines
@@ -16,7 +20,7 @@ def generateLines(streams): # generate the lines to bet on based off of the stat
         # add or subtract 1-3% to generate a random line
         adjustment = random.uniform(-0.03,0.03) # uniform rounds the number based off variance -> https://www.w3schools.com/python/ref_random_uniform.asp
         line = int(base * (1+adjustment)) # cast to a int
-        lines.append(line) # add the generationed line to the list
+        lines.append(line) # add the generated line to the list
     return lines # return all the lines made
 
 def placeBet(df):
@@ -56,13 +60,15 @@ def simulateBet(bet): # a very simple random simulation
     outcome = 'over' if actualStreams > bet['line'] else 'under'
     win = bet['choice'] == outcome # check if the stored choice is equal to the outcome
 
+    cleanActualStreams = formatNumber(actualStreams)
+
     print("Simulating your bet...") # just some theatrics
-    print(f"Actual streams: {actualStreams}")
+    print(f"Actual streams: {cleanActualStreams}")
     print(f"You bet {bet['choice'].upper()} {bet['line']:,}")
     print("You WON!" if win else "You LOST!")
 
     return {
-        "actualstreams": actualStreams,
+        "actualstreams": actualStreams, # keep it straight int for computer reading
         "won": win
     }
 
