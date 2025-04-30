@@ -8,7 +8,7 @@ def cleanStreams(streamStr):
 
 def formatNumber(num):
     number = int(num)
-    return "{:,}".format(number)
+    return "{:,}".format(number) # helpful reference -> https://www.reddit.com/r/learnpython/comments/t5japj/is_format_still_efficient_and_used/
 
 def generateLines(streams):
     lines = []
