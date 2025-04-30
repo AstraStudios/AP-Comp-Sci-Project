@@ -1,6 +1,6 @@
 import pandas as pd # use pandas to read the csv easily
 import random
-# as stated on charts.csv, all stream data comes from https://kworb.net/spotify/country/global_daily.html
+# charts.csv, all stream data comes from https://kworb.net/spotify/country/global_daily.html
 
 def cleanStreams(streamStr):
     # convert the stream number to python readable integer
