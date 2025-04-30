@@ -41,10 +41,10 @@ def placeBet(df):
 
         # in the future extend this to record to a file or a database
         return {
-            "song": selected['Song'],
+            "song": selected['Song'], # make sure the song is known
             "artist": selected['Artist'],
             "line": selected['Lines'], # save the line the bet was taken at
-            "choice": bet
+            "choice": bet # save this to check in simulation
         }
     
     except Exception as e:
@@ -67,5 +67,5 @@ def simulateBet(bet): # a very simple random simulation
 
 df = pd.read_csv("charts.csv") # read the csv and make the data frame hold it
 df["Lines"] = generateLines(df["Streams"]) # take the stream data and generate lines
-bet = placeBet(df)
+bet = placeBet(df) # place the bet as a variable so that we can use it to simulate
 simulateBet(bet) # finish by simulating!
