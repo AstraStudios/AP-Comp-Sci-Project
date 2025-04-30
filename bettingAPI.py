@@ -43,13 +43,29 @@ def placeBet(df):
         return {
             "song": selected['Song'],
             "artist": selected['Artist'],
-            "line": selected['Lines'],
+            "line": selected['Lines'], # save the line the bet was taken at
             "choice": bet
         }
     
     except Exception as e:
         print("Error placing bet:", e) # just in case theres an error
 
+def simulateBet(bet): # a very simple random simulation
+    actualStreams = int(bet['line'] * random.uniform(0.95,1.05)) # +- 5% of line
+    outcome = 'over' if actualStreams > bet['line'] else 'under'
+    win = bet['choice'] == outcome # check if the stored choice is equal to the outcome
+
+    print("Simulating your bet...") # just some theatrics
+    print(f"Actual streams: {actualStreams}")
+    print(f"You bet {bet['choice'].upper()} {bet['line']:,}")
+    print("You WON!" if win else "You LOST!")
+
+    return {
+        "actualstreams": actualStreams,
+        "won": win
+    }
+
 df = pd.read_csv("charts.csv") # read the csv and make the data frame hold it
 df["Lines"] = generateLines(df["Streams"]) # take the stream data and generate lines
 bet = placeBet(df)
+simulateBet(bet) # finish by simulating!
