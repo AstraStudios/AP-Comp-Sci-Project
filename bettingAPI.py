@@ -23,29 +23,33 @@ def placeBet(df):
     print("\n Top 10 Songs Today:")
     print(df[["Rank", "Song", "Artist", "Lines"]].head(10).to_string(index=False))
 
-    try:
-        rank = int(input("\nSelect a song by rank: "))
-        selected = df[df["Rank"]==rank].iloc[0]
+    while True:
+        try:
+            rank = int(input("\nSelect a song by rank: "))
+            selected = df[df["Rank"]==rank].iloc[0]
 
-        print(f"\nYou selected {selected['Song']} by {selected['Artist']}")
-        print(f"Line is: {selected['Lines']:,} streams")
+            print(f"\nYou selected {selected['Song']} by {selected['Artist']}")
+            print(f"Line is: {selected['Lines']:,} streams")
 
-        bet = input("OVER or UNDER? ").strip().lower()
-        if bet not in ["over", "under"]:
-            print("Invalid bet choice")
-            return
+            bet = input("OVER or UNDER? ").strip().lower()
+            if bet not in ["over", "under"]:
+                print("Invalid bet choice")
+                return
+            
+            print(f"\nBet placed: {bet.upper()} on {selected['Song']} at line {selected['Lines']:,} streams")
+
+            return {
+                "song": selected['Song'],
+                "artist": selected['Artist'],
+                "line": selected['Lines'],
+                "choice": bet
+            }
         
-        print(f"\nBet places: {bet.upper()} on {selected['Song']} at line {selected['Lines']:,} streams")
-
-        return {
-            "song": selected['Song'],
-            "artist": selected['Artist'],
-            "line": selected['Lines'],
-            "choice": bet
-        }
-    
-    except Exception as e:
-        print("Error placing bet:", e)
+        except ValueError:
+            print("Please enter a valid number for rank.")
+        
+        except Exception as e:
+            print("Error placing bet:", e)
 
 def simulateBet(bet):
     actualStreams = int(bet['line'] * random.uniform(0.95,1.05))
